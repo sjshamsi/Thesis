@@ -1,1 +1,10 @@
 dmdt_Analysis/Histograms/FBPCA/QSOsOnly_allbands_S_Images/*
+dmdt_Analysis/__pycache__/
+dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50.pkl
+dmdt_Analysis/Histograms/dmdt_by_OID_50x50.pkl
+dmdt_Analysis/Histograms/dmdt_template_by_Type_Band_50x50.pkl
+dmdt_Analysis/Histograms/dmdt_template_by_type_band_50x50.pkl
+dmdt_Analysis/Histograms/FBPCA/L_QSOsOnly_allbands.npy
+dmdt_Analysis/Histograms/FBPCA/M_QSOsOnly_allbands.npy
+dmdt_Analysis/Histograms/FBPCA/S_QSOsOnly_allbands.npy
+models/tmpe3gdw39c/_tmp.pth
