@@ -1,0 +1,20 @@
+paula_original_features_gband_parquet = "/home/shoaib/PSChallenge/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_gband_all.parquet"
+paula_original_features_rband_parquet = "/home/shoaib/PSChallenge/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_rband_all.parquet"
+
+paula_original_features_gband_csv = "/home/shoaib/PSChallenge/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_gband_all.csv"
+paula_original_features_rband_csv = "/home/shoaib/PSChallenge/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_rband_all.csv"
+
+paula_original_lightcurves_gband = "/home/shoaib/PSChallenge/Original_Data/QSO_AGN_Blazar_ZTF_DR6_lcs_gband.parquet"
+paula_original_lightcurves_rband = "/home/shoaib/PSChallenge/Original_Data/QSO_AGN_Blazar_ZTF_DR6_lcs_rband.parquet"
+
+panstarrs_pointsources = "/home/shoaib/PSChallenge/Original_Data/QSO_AGN_Blazar_sample_milliquas_roma_ps_score_pointsources.csv"
+
+
+
+original_features_by_oid = "/home/shoaib/PSChallenge/original_features_by_oid.csv"
+filtered_lightcurves_gband = "/home/shoaib/PSChallenge/filtered_lightcurves_gband.parquet"
+filtered_lightcurves_rband = "/home/shoaib/PSChallenge/filtered_lightcurves_rband.parquet"
+filtered_lightcurves = "/home/shoaib/PSChallenge/filtered_lightcurves.parquet"
+
+dmdt_by_OID_50x50 = '/home/shoaib/Thesis/dmdt_Analysis/Histograms/dmdt_by_OID_50x50.pkl'
+dmdt_by_Name_Band_50x50 = '/home/shoaib/Thesis/dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50.pkl'
