@@ -8,3 +8,5 @@ dmdt_Analysis/Histograms/FBPCA/L_QSOsOnly_allbands.npy
 dmdt_Analysis/Histograms/FBPCA/M_QSOsOnly_allbands.npy
 dmdt_Analysis/Histograms/FBPCA/S_QSOsOnly_allbands.npy
 models/tmpe3gdw39c/_tmp.pth
+Misc/dt_0_1500_10000.pkl
+Misc/dm_-4_4_500.pkl
