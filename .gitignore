@@ -10,3 +10,7 @@ dmdt_Analysis/Histograms/FBPCA/S_QSOsOnly_allbands.npy
 models/tmpe3gdw39c/_tmp.pth
 Misc/dt_0_1500_10000.pkl
 Misc/dm_-4_4_500.pkl
+Misc/dt_0_1500_1000.pkl
+dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50_equidistant_bins.pkl
+Misc/logdt_-5_4_10000.pkl
+Misc/dt_0_50_10000.pkl
