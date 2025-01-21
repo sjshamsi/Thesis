@@ -36,6 +36,7 @@ filtered_lightcurves_rband = "/content/drive/MyDrive/Thesis/filtered_lightcurves
 filtered_lightcurves = "/content/drive/MyDrive/Thesis/filtered_lightcurves.parquet"
 
 dmdt_by_Name_Band_50x50 = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50.pkl'
+dmdt_by_name_band_50x50_equidistant_bins = Thesis_Fies + 'Thesis/dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50_equidistant_bins.pkl'
 
 M_FBPCA_QSOsOnly_allbands = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/M_FBPCA_QSOsOnly_allbands.npy'
 L_FBPCA_QSOsOnly_allbands = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/L_FBPCA_QSOsOnly_allbands.npy'
