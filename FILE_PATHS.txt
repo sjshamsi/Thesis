@@ -10,7 +10,6 @@ paula_original_lightcurves_rband = "/home/shoaib/PSChallenge/Original_Data/QSO_A
 panstarrs_pointsources = "/home/shoaib/PSChallenge/Original_Data/QSO_AGN_Blazar_sample_milliquas_roma_ps_score_pointsources.csv"
 
 
-
 original_features_by_oid = "/home/shoaib/PSChallenge/original_features_by_oid.csv"
 filtered_lightcurves_gband = "/home/shoaib/PSChallenge/filtered_lightcurves_gband.parquet"
 filtered_lightcurves_rband = "/home/shoaib/PSChallenge/filtered_lightcurves_rband.parquet"
@@ -18,3 +17,27 @@ filtered_lightcurves_file = "/home/shoaib/PSChallenge/filtered_lightcurves.parqu
 
 dmdt_by_OID_50x50 = '/home/shoaib/Thesis/dmdt_Analysis/Histograms/dmdt_by_OID_50x50.pkl'
 dmdt_by_Name_Band_50x50 = '/home/shoaib/Thesis/dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50.pkl'
+
+
+### Google Colab ###
+data_dir = '/content/drive/MyDrive/Thesis/Original_Data/'
+paula_original_features_gband_csv = "/content/drive/MyDrive/Thesis/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_gband_all.csv"
+paula_original_features_rband_csv = "/content/drive/MyDrive/Thesis/Original_Data/features_QSO_AGN_Blazar_ZTF_DR6_lcs_rband_all.csv"
+
+paula_original_lightcurves_gband = "/content/drive/MyDrive/Thesis/Original_Data/QSO_AGN_Blazar_ZTF_DR6_lcs_gband.parquet"
+paula_original_lightcurves_rband = "/content/drive/MyDrive/Thesis/Original_Data/QSO_AGN_Blazar_ZTF_DR6_lcs_rband.parquet"
+
+panstarrs_pointsources = "/content/drive/MyDrive/Thesis/Original_Data/QSO_AGN_Blazar_sample_milliquas_roma_ps_score_pointsources.csv"
+
+
+original_features_by_oid = "/content/drive/MyDrive/Thesis/original_features_by_oid.csv"
+filtered_lightcurves_gband = "/content/drive/MyDrive/Thesis/filtered_lightcurves_gband.parquet"
+filtered_lightcurves_rband = "/content/drive/MyDrive/Thesis/filtered_lightcurves_rband.parquet"
+filtered_lightcurves = "/content/drive/MyDrive/Thesis/filtered_lightcurves.parquet"
+
+dmdt_by_Name_Band_50x50 = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/dmdt_by_Name_Band_50x50.pkl'
+
+M_FBPCA_QSOsOnly_allbands = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/M_FBPCA_QSOsOnly_allbands.npy'
+L_FBPCA_QSOsOnly_allbands = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/L_FBPCA_QSOsOnly_allbands.npy'
+S_FBPCA_QSOsOnly_allbands = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/S_FBPCA_QSOsOnly_allbands.npy'
+FBPCA_QSOsOnly_allbands_S_Images = '/content/drive/MyDrive/Thesis/dmdt_Analysis/Histograms/FBPCA/FBPCA_QSOsOnly_allbands_S_Images/'
