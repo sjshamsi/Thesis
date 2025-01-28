@@ -68,7 +68,7 @@ def get_2Dhistogram(dmagnitudes, dmagnitudes_bins, dtimes, dtimes_bins, normalis
     return hist, _dm_edges, _dt_edges, 
 
 
-def plot_dm_dt(dm_dt_hist, band, dm_bins, dt_bins, dm_nticks=10, dt_nticks=10, title=None):
+def plot_dm_dt(dm_dt_hist, band, dm_bins, dt_bins, dm_nticks=10, dt_nticks=10, title=None, return_imshow=False):
     dm_indices = linspace(0, len(dm_bins) - 1, dm_nticks, dtype=int)
     dt_indices = linspace(0, len(dt_bins) - 1, dt_nticks, dtype=int)
 
@@ -99,6 +99,11 @@ def plot_dm_dt(dm_dt_hist, band, dm_bins, dt_bins, dm_nticks=10, dt_nticks=10, t
         g_ch = ax.imshow(dm_dt_hist[:, :, 1], origin='lower', cmap='Greens', aspect='auto', extent=[0, len(dt_bins)-1, 0, len(dm_bins) - 1], alpha=alpha)
         g_cbar = plt.colorbar(g_ch, ax=ax, shrink=0.8, label="$g$ band", location='left')
 
+    if return_imshow:
+        ax.figure = None
+        plt.close(fig)
+        return ax, r_ch, g_ch
+        
     plt.yticks(ticks=dm_indices, labels=dm_ticks_labels)
     plt.xticks(ticks=dt_indices, labels=dt_ticks_labels, size=7)
 
