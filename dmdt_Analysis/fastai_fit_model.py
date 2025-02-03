@@ -1,14 +1,34 @@
 import pandas as pd
 import numpy as np
+from PIL import Image
+from pathlib import Path
 from fastai.vision.all import *
+from fastai.callback.tracker import SaveModelCallback
+from sklearn.metrics import classification_report
+
+
+MODEL_SAVE_PATH = Path('/content/drive/MyDrive/Thesis_Files/Thesis/dmdt_Analysis/Models/')
+MODEL_SAVE_PATH.mkdir(parents=True, exist_ok=True)
+
+
+def numpy_to_pil(numpy_array):
+    numpy_array = (numpy_array - numpy_array[:, :, :-1].min()) / (numpy_array[:, :, :-1].max() - numpy_array[:, :, :-1].min())
+    numpy_array[:, :, 2] = np.zeros_like(numpy_array[:, :, 2])
+    return PILImage.create(Image.fromarray((numpy_array * 255).astype(np.uint8)))
+
+def norm(numpy_array):
+    numpy_array = (numpy_array - numpy_array[:, :, :-1].min()) / (numpy_array[:, :, :-1].max() - numpy_array[:, :, :-1].min())
+    numpy_array[:, :, 2] = np.zeros_like(numpy_array[:, :, 2])
+    return numpy_array
 
 class FastAI_Fit:
     def __init__(self, df: pd.DataFrame, data_column_name: str, label_column_name: str,
-                 model, batch_size: int, validation_percentage: float, model_save_path):s
+                 model, batch_size: int, validation_percentage: float, model_save_name: str):
         self.df = df
         self.data_column_name = data_column_name
         self.label_column_name = label_column_name
         self.model = model
+        self.model_save_name = model_save_name
         self.batch_size = batch_size
         self.validation_percentage = validation_percentage
         self.dls = self.create_dataloaders()
@@ -17,28 +37,26 @@ class FastAI_Fit:
         """Creates FastAI DataLoaders from the given DataFrame."""
         dls = DataBlock(
             blocks=(ImageBlock, CategoryBlock),
-            get_x=ColReader(self.data_column_name),
-            get_y=ColReader(self.label_column_name),
+            get_x=lambda r: numpy_to_pil(r[self.data_column_name]),  # Convert NumPy array to image
+            get_y=lambda r: r[self.label_column_name],     
             splitter=RandomSplitter(valid_pct=self.validation_percentage),
             item_tfms=Resize(224)
         ).dataloaders(self.df, bs=self.batch_size)
         return dls
     
-    def train(self, epochs: int = 5, lr: float = 1e-3):
-        """Trains the model using the given DataLoaders."""
-        learn = vision_learner(self.dls, self.model, metrics=[accuracy, error_rate])
-        learn.fine_tune(20, base_lr=lr_min.valley, cbs=[SaveModelCallback(monitor='valid_loss', comp=np.less, fname='equivalent_bins_individual_class_backgrounds_model'), EarlyStoppingCallback(monitor='valid_loss', patience=3)])
-        lr_min = learn.lr_find(show_plot=True)
+    def train(self, epochs: int = 20, lr: float = 1e-3, show_lr_plot=False):
+        self.learn = vision_learner(self.dls, self.model, metrics=[accuracy, error_rate])
+        self.lr_min = self.learn.lr_find(show_plot=show_lr_plot)
+        self.learn.fine_tune(epochs, base_lr=self.lr_min.valley,
+                             cbs=[SaveModelCallback(monitor='valid_loss', comp=np.less, fname=MODEL_SAVE_PATH/self.model_save_name,
+                                  EarlyStoppingCallback(monitor='valid_loss', patience=3)])
     
-    
-        return learn
-    
-    def plot_confusion_matrix(interp, ax, title):
+    def plot_confusion_matrix(self, ax, title):
+        self.interp = ClassificationInterpretation.from_learner(self.learn)
         cm = interp.confusion_matrix()
         cm_percent = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] * 100
         im = ax.imshow(cm_percent, cmap='Blues', interpolation='nearest')
 
-        # Add text annotations
         for i in range(len(cm_percent)):
             for j in range(len(cm_percent[i])):
                 text = f"{cm_percent[i, j]:.1f}%\n({int(cm[i, j])})"
@@ -53,38 +71,5 @@ class FastAI_Fit:
         ax.set_xticklabels(interp.vocab)
         ax.set_yticklabels(interp.vocab)
 
-
-
-def fit_model(df: pd.DataFrame, data_column_name: str, label_column_name: str,
-              model, batch_size: int, validation_percentage: float):
-
-
-    dls.show_batch(max_n=9, ax=show_batch_ax)
-
-    learn = vision_learner(dls, model, metrics=[accuracy, error_rate])
-    lr_min = learn.lr_find(show_plot=True)
-    
-    learn.fine_tune(20, base_lr=lr_min.valley, cbs=[SaveModelCallback(monitor='valid_loss', comp=np.less, fname='equivalent_bins_individual_class_backgrounds_model'), EarlyStoppingCallback(monitor='valid_loss', patience=3)])
-    
-    learn.recorder.plot_loss()
-    learn.load('equivalent_bins_individual_class_backgrounds_model')
-
-
-
-    interp = ClassificationInterpretation.from_learner(learn)
-
-    preds, targets = learn.get_preds()
-
-    pred_classes = preds.argmax(dim=1)
-
-    # Generate the report
-    report = classification_report(targets, pred_classes, target_names=dls.vocab)
-    print(report)
-
-    interp.plot_top_losses(k=6, figsize=(6, 6))  # Show 5 samples with largest loss
-
-    interp.plot_top_losses(k=6, figsize=(6, 6), largest=False)  # Show 5 samples with lowest loss
-
-
-print(f"Suggested Learning Rates: Min: {lr_min.valley}")
-
+    def plot_losses(self, ax):
+        self.learn.recorder.plot_losses(ax=ax)
