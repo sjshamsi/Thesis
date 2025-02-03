@@ -2,7 +2,7 @@ from numpy import subtract, triu_indices_from, log10, histogram2d, linspace
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
-def get_differenciation(magnitudes, times, log_dt=False):
+def get_differenciation(magnitudes, times):
     """Returns the 'differenciation' when given an array of magnitudes and corresponding times.
     (According to Mahabal et. al. 2017)
 
@@ -21,7 +21,7 @@ def get_differenciation(magnitudes, times, log_dt=False):
         Returns (dm, dt) arrays.
     """
     dm = subtract.outer(magnitudes, magnitudes)  # M_i - M_j
-    dt = subtract.outer(times, times) # t_i - j
+    dt = subtract.outer(times, times) # t_i - t_j
 
     # Flatten the upper triangle of the matrices (excluding diagonal)
     upper_triangle_indices = triu_indices_from(dt, k=1)
@@ -29,21 +29,19 @@ def get_differenciation(magnitudes, times, log_dt=False):
     dm = dm[upper_triangle_indices] * -1
     dt = dt[upper_triangle_indices] * -1
 
-    if log_dt:
-        dt = log10(dt)
     return dm, dt
 
-def get_2Dhistogram(dmagnitudes, dmagnitudes_bins, dtimes, dtimes_bins, normalise=False, scale_factor=255):
-    """Returns a histogram of the d^n(m) and d^n(t) pairs (n can be > 1) with provided bins.
+def get_2Dhistogram(magnitudes, dmagnitudes_bins, times, dtimes_bins, normalise=False, Mahabal_Format=False):
+    """Returns a histogram of the dm and dt pairs with provided bins.
     Histogram is inverted before return.
 
     Parameters
     ----------
-    dmagnitudes : numpy.ndarray
+    magnitudes : numpy.ndarray
         Will be binned along the y-axis
     dmagnitudes_bins : int, numpy.ndarray
         Will be passed directly to np.histogram2d.
-    dtimes : numpy.ndarray
+    times : numpy.ndarray
         Will be binned along the x-axis
     dtimes_bins : int, numpy.ndarray
         Will be passed directly to np.histogram2d.
@@ -57,15 +55,16 @@ def get_2Dhistogram(dmagnitudes, dmagnitudes_bins, dtimes, dtimes_bins, normalis
     touple of numpy.ndarray, numpy.ndarray, numpy.ndarray
         Returns the 2D histogram, dmagnitude bins, and dtime bins.
     """
+    dmagnitudes, dtimes = get_differenciation(magnitudes=magnitudes, times=times)
     hist, _dm_edges, _dt_edges = histogram2d(dmagnitudes, dtimes, bins=[dmagnitudes_bins, dtimes_bins])
 
     if normalise:
         hist = hist / hist.sum()
 
-    if scale_factor and normalise:
-        hist = ((scale_factor * hist) + 0.99999).astype(int)
+    if Mahabal_Format:
+        hist = ((255 * hist) + 0.99999).astype(int)
 
-    return hist, _dm_edges, _dt_edges, 
+    return hist, _dm_edges, _dt_edges
 
 
 def plot_dm_dt(dm_dt_hist, band, dm_bins, dt_bins, dm_nticks=10, dt_nticks=10, title=None, return_imshow=False):
@@ -92,11 +91,16 @@ def plot_dm_dt(dm_dt_hist, band, dm_bins, dt_bins, dm_nticks=10, dt_nticks=10, t
 
     fig, ax = plt.subplots(figsize=fig_size)
 
-    if 'r' in band:
+    if band == 'rg':
         r_ch = ax.imshow(dm_dt_hist[:, :, 0], origin='lower', cmap='Reds', aspect='auto', extent=[0, len(dt_bins)-1, 0, len(dm_bins) - 1], alpha=alpha)
         r_cbar = plt.colorbar(r_ch, ax=ax, shrink=0.8, label="$r$ band")
-    if 'g' in band:
         g_ch = ax.imshow(dm_dt_hist[:, :, 1], origin='lower', cmap='Greens', aspect='auto', extent=[0, len(dt_bins)-1, 0, len(dm_bins) - 1], alpha=alpha)
+        g_cbar = plt.colorbar(g_ch, ax=ax, shrink=0.8, label="$g$ band", location='left')
+    if band == 'r':
+        r_ch = ax.imshow(dm_dt_hist, origin='lower', cmap='Reds', aspect='auto', extent=[0, len(dt_bins)-1, 0, len(dm_bins) - 1], alpha=alpha)
+        r_cbar = plt.colorbar(r_ch, ax=ax, shrink=0.8, label="$r$ band")
+    if band == 'g':
+        g_ch = ax.imshow(dm_dt_hist, origin='lower', cmap='Greens', aspect='auto', extent=[0, len(dt_bins)-1, 0, len(dm_bins) - 1], alpha=alpha)
         g_cbar = plt.colorbar(g_ch, ax=ax, shrink=0.8, label="$g$ band", location='left')
 
     if return_imshow:
